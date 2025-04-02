@@ -1,0 +1,31 @@
+ID,Topic,Skill_Tag,Question,Difficulty,Expected_Output
+1,Syntax,syntax,"Print 'Hello, world!' on the screen",Easy,"Hello, world!"
+2,Syntax,syntax,Fix the syntax error in this code: prnt('Hello'),Medium,print('Hello')
+3,Syntax,syntax,Write a Python comment,Easy,# This is a comment
+4,Syntax,syntax,Write a statement that does nothing,Medium,pass
+5,Syntax,syntax,Assign value 5 to variable x,Easy,x = 5
+6,Variables & Input,variable_input,Get the user's name and greet them,Medium,"Hello, John"
+7,Variables & Input,variable_input,Get two numbers and print their sum,Easy,Sum: 12
+8,Variables & Input,variable_input,Input a number and print double its value,Medium,Double: 10
+9,Variables & Input,variable_input,Store user input in a variable,Easy,User entered: apple
+10,Variables & Input,variable_input,Get age input and print year to turn 100,Medium,You will turn 100 in 2080
+11,If-Else Logic,logic,Check if number is positive or negative,Easy,Positive
+12,If-Else Logic,logic,Check if a number is even or odd,Medium,7 is odd
+13,If-Else Logic,logic,"If score >= 50, print 'Pass', else 'Fail'",Easy,Pass
+14,If-Else Logic,logic,Check if age is between 18 and 60,Medium,Valid age
+15,If-Else Logic,logic,Check if user entered 'yes',Easy,You agreed
+16,Loops,loop,Print numbers from 1 to 5 using for loop,Medium,1 2 3 4 5
+17,Loops,loop,Print even numbers from 2 to 10,Easy,2 4 6 8 10
+18,Loops,loop,Print each character in 'cat',Medium,c a t
+19,Loops,loop,Print 5 stars using while loop,Easy,* * * * *
+20,Loops,loop,Sum numbers 1 to 10 using loop,Medium,Sum: 55
+21,Lists,list,"Sum all elements in list [1, 2, 3]",Easy,6
+22,Lists,list,"Print the max value in [3, 9, 1]",Medium,9
+23,Lists,list,"Print length of list [a, b, c]",Easy,3
+24,Lists,list,"Append 'z' to ['x', 'y']",Medium,"['x', 'y', 'z']"
+25,Lists,list,"Sort list [5, 2, 8]",Easy,"[2, 5, 8]"
+26,Functions,function,Write a function greet(name) to print Hello <name>,Medium,Hello John
+27,Functions,function,Write a function to return square of a number,Easy,25
+28,Functions,function,Write a function is_even(num) to check even,Medium,True
+29,Functions,function,"Write a function add(a, b) that returns sum",Easy,Result: 8
+30,Functions,function,Call function that prints 'Hi!',Medium,Hi!
