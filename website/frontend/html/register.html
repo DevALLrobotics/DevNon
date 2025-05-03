@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>สมัครสมาชิก</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>สมัครสมาชิก</h1>
+  
+  <form action="/register" method="post">
+    <label for="username">ชื่อผู้ใช้:</label><br>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="email">อีเมล:</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="password">รหัสผ่าน:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <button type="submit">สมัครสมาชิก</button>
+  </form>
+
+  <p><a href="/">กลับหน้าแรก</a></p>
+</body>
+</html>
