@@ -39,3 +39,23 @@ async def register_user(
 
     # เปลี่ยนเส้นทางกลับไปหน้าแรก (หรือแสดงข้อความสมัครสำเร็จ)
     return RedirectResponse("/", status_code=303)
+
+# แสดงหน้า login
+@app.get("/login")
+def show_login():
+    return FileResponse("frontend/html/login.html")
+
+# รับข้อมูลจากฟอร์ม login
+@app.post("/login")
+async def login_user(
+    email: str = Form(...),
+    password: str = Form(...)
+):
+    # 🧪 (ตอนนี้ยังไม่เชื่อมฐานข้อมูล)
+    # จำลอง: เช็คว่าอีเมลคือ "test@example.com" และรหัสผ่าน "1234"
+    if email == "test@example.com" and password == "1234":
+        print("✅ เข้าสู่ระบบสำเร็จ:", email)
+        return RedirectResponse("/", status_code=303)
+    else:
+        print("❌ เข้าสู่ระบบล้มเหลว:", email)
+        return RedirectResponse("/login", status_code=303)
