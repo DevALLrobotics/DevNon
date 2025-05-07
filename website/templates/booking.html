@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Field Booking</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="field vex-iq">
+        <h2>VEX IQ - Field 1</h2>
+        <p>Status: Available</p>
+        <button class="book-btn">Book This Field</button>
+    </div>
+    <div class="field vex-iq">
+        <h2>VEX IQ - Field 2</h2>
+        <p>Status: Available</p>
+        <button class="book-btn">Book This Field</button>
+    </div>
+    <div class="field vex-v5">
+        <h2>VEX V5 - Field</h2>
+        <p>Status: Available</p>
+        <button class="book-btn">Book This Field</button>
+    </div>
+</div>
+
+<div class="booking-form">
+    <h2>Book a Field</h2>
+    <form action="#" method="POST">
+        <label for="field-type">Select Field:</label>
+        <select id="field-type" name="field-type">
+            <option value="vex-iq-1">VEX IQ - Field 1</option>
+            <option value="vex-iq-2">VEX IQ - Field 2</option>
+            <option value="vex-v5">VEX V5 - Field</option>
+        </select>
+        <br>
+        <label for="booking-time">Booking Time:</label>
+        <input type="datetime-local" id="booking-time" name="booking-time" required>
+        <br>
+        <button type="submit" class="submit-btn">Submit Booking</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+<style>
+body {
+    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 50px;
+}
+
+.field {
+    width: 200px;
+    height: 150px;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.field:hover {
+    transform: scale(1.05);
+}
+
+.vex-iq {
+    background-color: #d1e7ff;
+}
+
+.vex-v5 {
+    background-color: #ffd1d1;
+}
+
+.book-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.book-btn:hover {
+    background-color: #0056b3;
+}
+
+.booking-form {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+</style>

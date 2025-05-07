@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;  /* พื้นหลังสีดำ */
+    color: #fff;  /* สีตัวอักษรสีขาว เพื่อให้อ่านง่าย */
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;  /* สีตัวอักษรสีขาว */
+    margin-bottom: 20px;
+}
+
+.navigation {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.navigation a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #00bfff;  /* สีฟ้า */
+}
+
+.navigation a:hover {
+    text-decoration: underline;
+}
+
+.form-container {
+    width: 300px;
+    margin: 0 auto;
+    background-color: #333;  /* สีพื้นหลังฟอร์ม */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-container div {
+    margin-bottom: 15px;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;  /* สีข้อความ */
+}
+
+.form-container input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #555;  /* สีเส้นขอบ */
+    border-radius: 5px;
+    background-color: #222;  /* พื้นหลัง input */
+    color: #fff;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #222;  /* พื้นหลังตาราง */
+    color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #555;
+    text-align: left;
+}
+
+.flash-messages {
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #ff4d4d;  /* พื้นหลังสีแดง */
+    color: #fff;
+    border-radius: 5px;
+}
