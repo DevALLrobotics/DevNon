@@ -1,70 +1,52 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import sqlite3
+import pymysql
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'secretkey123'
 
-# Path to the database
-DB_PATH = os.path.join(os.path.dirname(__file__), 'database', 'database.db')
+# Database configuration
+DB_HOST = '143.198.203.134'
+DB_USER = 'non'
+DB_PASSWORD = '1234N'
+DB_NAME = 'testdb'
 
 # Database connection
 def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = pymysql.connect(
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME,
+        cursorclass=pymysql.cursors.DictCursor
+    )
     return conn
+
+# Login Required Decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please log in to access this page.')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Home Route
 @app.route('/')
+@login_required
 def home():
     try:
         conn = get_db_connection()
-        bookings = conn.execute('SELECT * FROM bookings').fetchall()
-        conn.close()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT * FROM bookings')
+            bookings = cursor.fetchall()
         return render_template('home.html', bookings=bookings)
     except Exception as e:
-        return f"Error: {str(e)}"
-
-# View Database Route
-@app.route('/view_db')
-def view_db():
-    try:
-        conn = get_db_connection()
-        users = conn.execute('SELECT * FROM users').fetchall()
-        conn.close()
-        users_list = [dict(user) for user in users]
-        return {'users': users_list}
-    except Exception as e:
-        return {'error': str(e)}
-
-# Login Route
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-
-        if not email or not password:
-            flash('Email and Password are required!')
-            return redirect(url_for('login'))
-
-        try:
-            conn = get_db_connection()
-            user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
-            conn.close()
-
-            if user and check_password_hash(user['password'], password):
-                session['user_id'] = user['id']
-                session['username'] = user['name']
-                flash('Login successful!')
-                return redirect(url_for('home'))
-            else:
-                flash('Invalid email or password!')
-        except Exception as e:
-            flash(f"Error: {str(e)}")
-
-    return render_template('login.html')
+        flash(f"Error: {str(e)}")
+        return redirect(url_for('home'))
 
 # Register Route
 @app.route('/register', methods=['GET', 'POST'])
@@ -80,15 +62,15 @@ def register():
 
         try:
             hashed_password = generate_password_hash(password)
-
             conn = get_db_connection()
-            conn.execute('INSERT INTO users (name, password, email) VALUES (?, ?, ?)', 
-                         (name, hashed_password, email))
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    'INSERT INTO users (name, password, email) VALUES (%s, %s, %s)', (name, hashed_password, email)
+                )
             conn.commit()
-            conn.close()
             flash('Registration successful!')
             return redirect(url_for('login'))
-        except sqlite3.IntegrityError:
+        except pymysql.IntegrityError:
             flash('Email already exists!')
         except Exception as e:
             flash(f"Error: {str(e)}")
@@ -97,31 +79,57 @@ def register():
 
 # Booking Route
 @app.route('/booking', methods=['GET', 'POST'])
-def booking():
-    if 'user_id' not in session:
-        flash('Please log in to book a field.')
-        return redirect(url_for('login'))
-
+@login_required
+def book_field():
     if request.method == 'POST':
-        user_id = session['user_id']
-        field_name = request.form['field_name']
-        date = request.form['date']
-        time = request.form['time']
+        field_type = request.form.get('field-type')
+        booking_time = request.form.get('booking-time')
+
+        if not field_type or not booking_time:
+            flash("All fields are required.")
+            return redirect(url_for('home'))
 
         try:
             conn = get_db_connection()
-            conn.execute('INSERT INTO bookings (user_id, field_name, date, time) VALUES (?, ?, ?, ?)', 
-                         (user_id, field_name, date, time))
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO bookings (user_id, field_name, date, time) VALUES (%s, %s, %s, %s)",
+                    (session['user_id'], field_type, booking_time.split('T')[0], booking_time.split('T')[1])
+                )
             conn.commit()
+            flash("Booking successful!")
+        except Exception as e:
+            flash(f"Error booking the field: {e}")
+        finally:
             conn.close()
 
-            flash('Booking successful!')
-            return redirect(url_for('home'))
+    return render_template('booking.html')
+
+# Login Route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        try:
+            conn = get_db_connection()
+            with conn.cursor() as cursor:
+                cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
+                user = cursor.fetchone()
+
+            if user and check_password_hash(user['password'], password):
+                session['user_id'] = user['id']
+                session['username'] = user['name']
+                flash('Login successful!')
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid email or password!')
 
         except Exception as e:
             flash(f"Error: {str(e)}")
 
-    return render_template('booking.html')
+    return render_template('login.html')
 
 # Logout Route
 @app.route('/logout')
