@@ -4,6 +4,8 @@ from fastapi.responses import FileResponse , RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+# Path ของฐานข้อมูล SQLite
+DB_PATH = "../database/database.db"
 
 # เสิร์ฟไฟล์ static (เช่น CSS, JS)
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
@@ -31,13 +33,45 @@ def show_register():
 @app.post("/register")
 async def register_user(
     username: str = Form(...),
+    password: str = Form(...),
+    first_name: str = Form(...),
+    last_name: str = Form(...),
+    birth_day: str = Form(...),
+    phone_num: str = Form(...),
     email: str = Form(...),
-    password: str = Form(...)
+    nickname: str = Form(...)
 ):
-    # 🔐 ตรงนี้คุณสามารถบันทึกลงฐานข้อมูล หรือ validate ได้
-    print("📝 สมัครสมาชิกใหม่:", username, email)
+    try:
+        # เชื่อมต่อกับฐานข้อมูล
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
 
-    # เปลี่ยนเส้นทางกลับไปหน้าแรก (หรือแสดงข้อความสมัครสำเร็จ)
+        # ตรวจสอบว่าชื่อผู้ใช้หรืออีเมลซ้ำหรือไม่
+        cursor.execute(
+            "SELECT * FROM users WHERE username = ? OR email = ?", (username, email)
+        )
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            print("❌ ชื่อผู้ใช้หรืออีเมลซ้ำ")
+            return RedirectResponse("/register", status_code=303)
+
+        # เพิ่มข้อมูลใหม่
+        cursor.execute(
+            """
+            INSERT INTO users (username, password, first_name, last_name, birth_day, phone_num, email, nickname)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (username, password, first_name, last_name, birth_day, phone_num, email, nickname)
+        )
+        conn.commit()
+        print(f"✅ สมัครสมาชิกสำเร็จ: {username}")
+
+    except Exception as e:
+        print(f"❌ Error: {e}")
+    finally:
+        conn.close()
+
     return RedirectResponse("/", status_code=303)
 
 # แสดงหน้า login
