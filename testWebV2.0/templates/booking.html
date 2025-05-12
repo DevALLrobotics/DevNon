@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
+    <title>Field Booking</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="field vex-iq">
+        <h2>VEX IQ - Field 1</h2>
+        <p>Status: Available</p>
+        <button class="book-btn" onclick="openModal('VEX IQ - Field 1')">Book This Field</button>
+    </div>
+    <div class="field vex-iq">
+        <h2>VEX IQ - Field 2</h2>
+        <p>Status: Available</p>
+        <button class="book-btn" onclick="openModal('VEX IQ - Field 2')">Book This Field</button>
+    </div>
+    <div class="field vex-v5">
+        <h2>VEX V5 - Field</h2>
+        <p>Status: Available</p>
+        <button class="book-btn" onclick="openModal('VEX V5 - Field')">Book This Field</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="bookingModal">
+    <div class="modal-content">
+        <h3>Choose Booking Time</h3>
+        <p id="field-name"></p>
+        <select id="time-slot">
+            <option value="">Select Time</option>
+            <option value="09:00 - 10:00">09:00 - 10:00</option>
+            <option value="10:00 - 11:00">10:00 - 11:00</option>
+            <option value="11:00 - 12:00">11:00 - 12:00</option>
+            <option value="13:00 - 14:00">13:00 - 14:00</option>
+            <option value="14:00 - 15:00">14:00 - 15:00</option>
+            <option value="15:00 - 16:00">15:00 - 16:00</option>
+        </select>
+        <button onclick="confirmBooking()">Confirm Booking</button>
+        <button onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/book_script.js') }}"></script>
+</body>
+</html>
