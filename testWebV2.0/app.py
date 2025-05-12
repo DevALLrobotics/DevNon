@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'secretkey123'
 
 # Database configuration
-DB_HOST = '143.198.203.134'
+DB_HOST = '206.189.81.76'
 DB_USER = 'non'
 DB_PASSWORD = '1234N'
 DB_NAME = 'testdb'
