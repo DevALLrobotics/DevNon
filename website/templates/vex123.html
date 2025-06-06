@@ -4,18 +4,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VEX 123 - All Robotics</title>
+  <link rel="icon" href="/static/images/logo.png" type="image/png">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800 font-sans">
 
-  <div class="max-w-4xl mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold mb-4">VEX 123</h1>
-    <img src="/static/images/vex123.png" alt="VEX 123" class="w-full max-h-[400px] object-cover rounded mb-6">
-    <p class="text-gray-700 text-lg mb-4">
-      VEX 123 เป็นหุ่นยนต์สำหรับเด็กเล็ก ช่วยพัฒนาแนวคิดการเขียนโปรแกรมเบื้องต้นโดยไม่ต้องใช้หน้าจอ
+  <!-- Navbar -->
+  <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+      <img src="/static/images/logo.png" alt="Logo" class="h-8 w-10">
+      <span class="text-xl font-bold text-gray-800">All Robotics</span>
+    </div>
+    <div class="space-x-8 flex items-center">
+      <a href="/" class="text-gray-600 hover:text-blue-500">หน้าแรก</a>
+      <div class="relative group">
+        <a href="#" class="text-gray-600 hover:text-blue-500">ผลิตภัณฑ์</a>
+        <div class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                    transition-all duration-200 z-20">
+          <a href="/vex123" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX 123</a>
+          <a href="/vexgo" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX GO</a>
+          <a href="/vexiq" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX IQ</a>
+          <a href="/vexv5" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX V5</a>
+        </div>
+      </div>
+      <a href="/competitions" class="text-gray-600 hover:text-blue-500">การแข่งขัน</a>
+      <a href="/contact" class="text-gray-600 hover:text-blue-500">ติดต่อเรา</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative w-full h-[70vh] overflow-hidden">
+    <img src="/static/images/vex123-room.png" alt="VEX 123 Room"
+         class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <h1 class="text-white text-4xl md:text-6xl font-bold">VEX 123</h1>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-12 px-4 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-semibold mb-6">แนะนำ VEX 123</h2>
+    <p class="text-gray-700 mb-4">
+      VEX 123 เป็นหุ่นยนต์แบบโต้ตอบที่ตั้งโปรแกรมได้ เหมาะสำหรับเด็กอายุ 4-7 ปี
+      ช่วยให้เด็กเรียนรู้พื้นฐานของการเขียนโปรแกรมและการคิดเชิงคำนวณผ่านการเล่นและกิจกรรมที่สนุกสนาน
     </p>
-    <a href="/" class="inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">⬅ กลับหน้าแรก</a>
-  </div>
+    <ul class="list-disc list-inside text-gray-700 mb-6">
+      <li>เขียนโปรแกรมผ่านปุ่มสัมผัสบนหุ่นยนต์</li>
+      <li>ใช้การ์ดโปรแกรมและ Coder สำหรับการเขียนโค้ดแบบไม่ใช้หน้าจอ</li>
+      <li>รองรับการเขียนโปรแกรมด้วย VEXcode 123 บนแท็บเล็ตและคอมพิวเตอร์</li>
+    </ul>
+    <img src="/static/images/vex123-features.jpg" alt="VEX 123 Features" class="w-full rounded shadow-md mb-6">
+    <h3 class="text-2xl font-semibold mb-4">คุณสมบัติเด่น</h3>
+    <ul class="list-disc list-inside text-gray-700 mb-6">
+      <li>แบตเตอรี่ชาร์จผ่าน USB</li>
+      <li>ไฟ LED หลายสีที่ตั้งโปรแกรมได้</li>
+      <li>เซ็นเซอร์ตรวจจับระยะทาง สี แสง และท่าทาง</li>
+      <li>ล้อสองล้อสำหรับการขับเคลื่อนและการหมุน</li>
+    </ul>
+    <a href="/contact" class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
+      ติดต่อเพื่อสั่งซื้อ
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow mt-10 p-4 text-center text-sm text-gray-500">
+    © 2025 All Robotics. สงวนลิขสิทธิ์.
+  </footer>
 
 </body>
 </html>
