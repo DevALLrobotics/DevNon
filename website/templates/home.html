@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +11,7 @@
     console.log("[DEBUG] HTML loaded and Tailwind CSS initialized.");
   </script>
 </head>
+
 <body class="bg-white text-gray-800 font-sans">
   <script>
     console.log("[DEBUG] Body rendering started.");
@@ -18,29 +20,29 @@
   <nav class="bg-white shadow p-4 flex justify-between items-center">
     <div class="flex items-center space-x-2">
       <img src="/static/images/logo.png" alt="Logo" class="h-8 w-10">
-        <span class="text-xl font-bold text-gray-800">All Robotics</span>
+      <span class="text-xl font-bold text-gray-800">All Robotics</span>
     </div>
-<div class="space-x-8 flex items-center">
-  <a href="#" class="text-gray-600 hover:text-blue-500">หน้าแรก</a>
+    <div class="space-x-8 flex items-center">
+      <a href="#" class="text-gray-600 hover:text-blue-500">หน้าแรก</a>
 
-  <!-- เฉพาะตรงนี้เท่านั้นที่ใช้ group -->
-  <div class="relative group">
-    <a href="#" class="text-gray-600 hover:text-blue-500">ผลิตภัณฑ์</a>
+      <!-- เฉพาะตรงนี้เท่านั้นที่ใช้ group -->
+      <div class="relative group">
+        <a href="#" class="text-gray-600 hover:text-blue-500">ผลิตภัณฑ์</a>
 
-    <!-- เมนู dropdown -->
-    <div class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg
+        <!-- เมนู dropdown -->
+        <div class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg
                 opacity-0 invisible group-hover:opacity-100 group-hover:visible
                 transition-all duration-200 z-20">
-      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX 123</a>
-      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX GO</a>
-      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX IQ</a>
-      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX V5</a>
-    </div>
-  </div>
+          <a href="/vex123" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX 123</a>
+          <a href="/vexgo" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX GO</a>
+          <a href="/vexiq" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX IQ</a>
+          <a href="/vexv5" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">VEX V5</a>
+        </div>
+      </div>
 
-  <a href="#" class="text-gray-600 hover:text-blue-500">การแข่งขัน</a>
-  <a href="#" class="text-gray-600 hover:text-blue-500">ติดต่อเรา</a>
-</div>
+      <a href="#" class="text-gray-600 hover:text-blue-500">การแข่งขัน</a>
+      <a href="#" class="text-gray-600 hover:text-blue-500">ติดต่อเรา</a>
+    </div>
 
 
   </nav>
@@ -49,55 +51,53 @@
     console.log("[DEBUG] Navbar rendered successfully.");
   </script>
 
-<section class="relative w-full h-[70vh] overflow-hidden">
-  <!-- รูปภาพแบบสไลด์เต็มจอ -->
-  <img id="slideshow" src="/static/images/ct1.jpg" alt="Full Image"
-       class="absolute inset-0 w-full h-full object-cover transition duration-500" />
+  <section class="relative w-full h-[70vh] overflow-hidden">
+    <!-- รูปภาพแบบสไลด์เต็มจอ -->
+    <img id="slideshow" src="/static/images/ct1.jpg" alt="Full Image"
+      class="absolute inset-0 w-full h-full object-cover transition duration-500" />
 
-  <!-- ปุ่มย้อนกลับ (ซ้าย) -->
-  <button onclick="prevImage()"
-          class="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
-    ◀
-  </button>
+    <!-- ปุ่มย้อนกลับ (ซ้าย) -->
+    <button onclick="prevImage()"
+      class="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
+      ◀
+    </button>
 
-  <!-- ปุ่มถัดไป (ขวา) -->
-  <button onclick="nextImage()"
-          class="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
-    ▶
-  </button>
-</section>
+    <!-- ปุ่มถัดไป (ขวา) -->
+    <button onclick="nextImage()"
+      class="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
+      ▶
+    </button>
+  </section>
 
-<script>
-  const images = [
-    "/static/images/ct1.jpg",
-    "/static/images/iqv5_2526.png",
-    "/static/images/promotion.jpg",
-  ];
+  <script>
+    const images = [
+      "/static/images/ct1.jpg",
+      "/static/images/iqv5_2526.png",
+      "/static/images/promotion.jpg",
+    ];
 
-  let currentIndex = 0;
-  const imgElement = document.getElementById("slideshow");
+    let currentIndex = 0;
+    const imgElement = document.getElementById("slideshow");
 
-  function showImage(index) {
-    imgElement.src = images[index];
-    console.log(`[DEBUG] Showing image ${index + 1}/${images.length}`);
-  }
+    function showImage(index) {
+      imgElement.src = images[index];
+      console.log(`[DEBUG] Showing image ${index + 1}/${images.length}`);
+    }
 
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % images.length;
-    showImage(currentIndex);
-  }
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    }
 
-  function prevImage() {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    showImage(currentIndex);
-  }
-</script>
-
-
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage(currentIndex);
+    }
+  </script>
 
   <section class="py-6 px-4 max-w-6xl mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div class="bg-white shadow-md rounded-lg p-6">
+      <!-- <div class="bg-white shadow-md rounded-lg p-6">
         <img src="/static/images/vex123.png" alt="VEX 123" class="w-full h-50 object-cover rounded mb-4">
         <h3 class="text-xl font-semibold mb-2">VEX 123</h3>
         <p class="text-gray-600">หุ่นยนต์สำหรับเด็กเล็ก เรียนรู้การเขียนโปรแกรมเบื้องต้น</p>
@@ -117,12 +117,36 @@
         <h3 class="text-xl font-semibold mb-2">VEX V5</h3>
         <p class="text-gray-600">ชุดหุ่นยนต์ขั้นสูงสำหรับการแข่งขันและการศึกษาในระดับมัธยมปลาย</p>
       </div>
-    </div>
+    </div> -->
+      <!-- VEX 123 -->
+      <a href="/vex123" class="block bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition">
+        <img src="/static/images/vex123.png" alt="VEX 123" class="w-full h-50 object-cover rounded mb-4">
+        <h3 class="text-xl font-semibold mb-2">VEX 123</h3>
+        <p class="text-gray-600">หุ่นยนต์สำหรับเด็กเล็ก เรียนรู้การเขียนโปรแกรมเบื้องต้น</p>
+      </a>
+
+      <!-- VEX GO -->
+      <a href="/vexgo" class="block bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition">
+        <img src="/static/images/vexgo.png" alt="VEX GO" class="w-full h-50 object-cover rounded mb-4">
+        <h3 class="text-xl font-semibold mb-2">VEX GO</h3>
+        <p class="text-gray-600">ชุดหุ่นยนต์สำหรับการเรียนรู้ STEM ในระดับประถมศึกษา</p>
+      </a>
+
+      <!-- VEX IQ -->
+      <a href="/vexiq" class="block bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition">
+        <img src="/static/images/vexiq.png" alt="VEX IQ" class="w-full h-50 object-cover rounded mb-4">
+        <h3 class="text-xl font-semibold mb-2">VEX IQ</h3>
+        <p class="text-gray-600">ระบบหุ่นยนต์ที่สามารถประกอบได้ง่าย เหมาะสำหรับการเรียนรู้ในระดับมัธยมต้น</p>
+      </a>
+
+      <!-- VEX V5 -->
+      <a href="/vexv5" class="block bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition">
+        <img src="/static/images/vexv5.png" alt="VEX V5" class="w-full h-50 object-cover rounded mb-4">
+        <h3 class="text-xl font-semibold mb-2">VEX V5</h3>
+        <p class="text-gray-600">ชุดหุ่นยนต์ขั้นสูงสำหรับการแข่งขันและการศึกษาในระดับมัธยมปลาย</p>
+      </a>
   </section>
 
-  <script>
-    console.log("[DEBUG] Product section rendered with 3 items.");
-  </script>
 
   <footer class="bg-white shadow mt-10 p-4 text-center text-sm text-gray-500">
     © 2025 All Robotics. สงวนลิขสิทธิ์.
@@ -132,4 +156,5 @@
     console.log("[DEBUG] Footer loaded. Page ready.");
   </script>
 </body>
+
 </html>
