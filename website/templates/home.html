@@ -32,13 +32,50 @@
     console.log("[DEBUG] Navbar rendered successfully.");
   </script>
 
-  <section class="text-center ">
-    <img src="/static/images/ct1.jpg" alt="content1" class="w-full h-full object-cover mb-6">
-  </section>
+<section class="relative w-full h-[70vh] overflow-hidden">
+  <!-- รูปภาพแบบสไลด์เต็มจอ -->
+  <img id="slideshow" src="/static/images/ct1.jpg" alt="Full Image"
+       class="absolute inset-0 w-full h-full object-cover transition duration-500" />
 
-  <script>
-    console.log("[DEBUG] Hero section loaded.");
-  </script>
+  <!-- ปุ่มย้อนกลับ (ซ้าย) -->
+  <button onclick="prevImage()"
+          class="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
+    ⬅
+  </button>
+
+  <!-- ปุ่มถัดไป (ขวา) -->
+  <button onclick="nextImage()"
+          class="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
+    ➡
+  </button>
+</section>
+
+<script>
+  const images = [
+    "/static/images/ct1.jpg",
+    "/static/images/iq_cmp_2526.jpg"
+  ];
+
+  let currentIndex = 0;
+  const imgElement = document.getElementById("slideshow");
+
+  function showImage(index) {
+    imgElement.src = images[index];
+    console.log(`[DEBUG] Showing image ${index + 1}/${images.length}`);
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage(currentIndex);
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage(currentIndex);
+  }
+</script>
+
+
 
   <section class="py-6 px-4 max-w-6xl mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
