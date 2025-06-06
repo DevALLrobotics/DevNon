@@ -20,12 +20,28 @@
       <img src="/static/images/logo.png" alt="Logo" class="h-8 w-10">
         <span class="text-xl font-bold text-gray-800">All Robotics</span>
     </div>
-    <div class="space-x-4">
-      <a href="#" class="text-gray-600 hover:text-blue-500">หน้าแรก</a>
-      <a href="#" class="text-gray-600 hover:text-blue-500">ผลิตภัณฑ์</a>
-      <a href="#" class="text-gray-600 hover:text-blue-500">การแข่งขัน</a>
-      <a href="#" class="text-gray-600 hover:text-blue-500">ติดต่อเรา</a>
+<div class="space-x-4 flex items-center">
+  <a href="#" class="text-gray-600 hover:text-blue-500">หน้าแรก</a>
+
+  <!-- เฉพาะตรงนี้เท่านั้นที่ใช้ group -->
+  <div class="relative group">
+    <a href="#" class="text-gray-600 hover:text-blue-500">ผลิตภัณฑ์</a>
+
+    <!-- เมนู dropdown -->
+    <div class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg
+                opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                transition-all duration-200 z-20">
+      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">รายงานที่ 1</a>
+      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">รายงานที่ 2</a>
+      <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">รายงานที่ 3</a>
     </div>
+  </div>
+
+  <a href="#" class="text-gray-600 hover:text-blue-500">การแข่งขัน</a>
+  <a href="#" class="text-gray-600 hover:text-blue-500">ติดต่อเรา</a>
+</div>
+
+
   </nav>
 
   <script>
