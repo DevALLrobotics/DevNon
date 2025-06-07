@@ -12,7 +12,7 @@
   </script>
 </head>
 
-<body class="bg-white text-gray-800 font-sans">
+<body class="bg-gradient-to-br from-blue-100 via-white to-pink-100 min-h-screen">
   <script>
     console.log("[DEBUG] Body rendering started.");
   </script>
@@ -49,23 +49,31 @@
     console.log("[DEBUG] Navbar rendered successfully.");
   </script>
 
-  <section class="relative w-full h-[70vh] overflow-hidden">
-    <!-- รูปภาพแบบสไลด์เต็มจอ -->
-    <img id="slideshow" src="/static/images/ct1.jpg" alt="Full Image"
-      class="absolute inset-0 w-full h-full object-cover transition duration-500" />
+<section class="flex justify-center items-center py-5">
+  <!-- กล่องใส่ภาพ -->
+  <div class="relative w-full max-w-5xl h-[60vh] bg-gray-100 overflow-hidden rounded-lg shadow-lg">
+    
+    <!-- รูปภาพอยู่ในกล่อง -->
+    <img id="slideshow"
+         src="/static/images/ct1.jpg"
+         alt="Full Image"
+         class="w-full h-full object-contain transition duration-500" />
 
     <!-- ปุ่มย้อนกลับ (ซ้าย) -->
     <button onclick="prevImage()"
-      class="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
+            class="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
       ◀
     </button>
 
     <!-- ปุ่มถัดไป (ขวา) -->
     <button onclick="nextImage()"
-      class="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
+            class="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white px-4 py-2 rounded-full hover:bg-opacity-80 z-10">
       ▶
     </button>
-  </section>
+  </div>
+</section>
+
+
 
   <script>
     const images = [

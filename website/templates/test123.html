@@ -2,27 +2,40 @@
 <html lang="en">
 
 <head>
+  <!-- พื้นฐานการตั้งค่า -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>
-    VEX123
-  </title>
-  <meta name="description" content="Simple landind page" />
+  <title>VEX123</title>
+
+  <!-- ข้อมูลเสริมเกี่ยวกับ SEO -->
+  <meta name="description" content="Simple landing page" />
   <meta name="keywords" content="" />
   <meta name="author" content="" />
-  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
-  <link rel="icon" href="/static/images/logo.png" type="image/png">
 
-  <!--Replace with your tailwind.css once created-->
+  <!-- ไอคอน -->
+  <link rel="icon" href="/static/images/logo.png" type="image/png" />
+
+  <!-- CSS: Tailwind CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
+
+  <!-- ฟอนต์ (Google Fonts) -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
-  <!-- Define your gradient here - use online tools to find a gradient matching your branding-->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+
+  <!-- สไตล์เพิ่มเติม -->
   <style>
+    body {
+      font-family: 'Sarabun', 'Kanit', 'Source Sans Pro', sans-serif;
+    }
+
     .gradient {
       background: linear-gradient(90deg, #6808d6 0%, #9151da 100%);
     }
   </style>
 </head>
+
 
 <body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
   <!--Nav-->
@@ -79,23 +92,26 @@
       <!--Left Col-->
       <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
 
-<!-- //TODO - doing -->
+        <!-- //TODO - doing -->
 
         <h1 class="my-4 text-5xl font-bold leading-tight flex items-center justify-start">
-          <span class="mr-4">Main Hero Message to sell yourself!</span>
+          <span class="mr-4">VEX123!</span>
         </h1>
 
-        <p class="leading-normal text-2xl mb-8">
-          Sub-hero message, not too long and not too short. Make it just right!
+        <p class="text-xl md:text-xl leading-normal mb-8" style="font-family: 'Sarabun', sans-serif;">
+          VEX 123 คือหุ่นยนต์ที่เด็กสามารถโปรแกรมได้ผ่านการเขียนโค้ด บัตรคำสั่ง หรือสั่งงานโดยตรง
+          เสริมสร้างพื้นฐานวิทยาการคอมพิวเตอร์และทักษะการคิด เหมาะสำหรับเด็กเตรียมอนุบาลถึงประถมต้น
         </p>
+
+
         <button
           class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-          Subscribe
+          Buy Now
         </button>
       </div>
       <!--Right Col-->
       <div class="w-full md:w-3/5 py-6 text-center">
-      <img src="/static/images/set_vex123.png" alt="vex123" class="h-auto w-auto max-w-full md:max-w-2xl mx-auto" />
+        <img src="/static/images/set_vex123.png" alt="vex123" class="h-auto w-auto max-w-full md:max-w-2xl mx-auto" />
 
         <!-- <img class="w-full md:w-4/5 z-50" src="hero.png" /> -->
       </div>
