@@ -21,5 +21,9 @@ def vexiq():
 def vexv5():
     return render_template('vexv5.html')
 
+@app.route('/test123')
+def test():
+    return render_template('test123.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
