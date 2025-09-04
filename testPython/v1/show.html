@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Online Judge (Python, In-Browser)</title>
+  <style>
+    :root{--bg:#0b1020;--panel:#141a2f;--muted:#8aa0b4;--ok:#34c759;--bad:#ff3b30;--warn:#ff9f0a;--txt:#e7eef7;--accent:#4da3ff}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,#0a0f1e,#0d1225);color:var(--txt);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji"}
+    .wrap{max-width:1100px;margin:32px auto;padding:0 16px}
+    h1{font-size:24px;margin:0 0 16px}
+    .bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .panel{background:var(--panel);border:1px solid #223055;border-radius:16px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
+    select,button,.input{background:#0e152b;border:1px solid #2a3a67;color:var(--txt);border-radius:10px;padding:10px 12px;font-size:14px}
+    button{cursor:pointer}
+    button.primary{background:var(--accent);border-color:#78b8ff;color:#00122a;font-weight:700}
+    button.ghost{background:#0e152b}
+    textarea{width:100%;min-height:340px;resize:vertical;background:#0a1024;border:1px solid #26355e;color:var(--txt);border-radius:12px;padding:12px;font-family:ui-monospace,SFMono-Regular,Consolas,Monaco,Menlo,monospace;font-size:13px}
+    .desc{color:var(--muted);font-size:13px}
+    .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #2a3a67;background:#0e152b;color:var(--muted);font-size:12px}
+    .ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+    .results{white-space:pre-wrap;background:#0a1024;border:1px solid #26355e;color:#cfe3ff;border-radius:12px;padding:12px;font-family:ui-monospace,SFMono-Regular,Consolas,Monaco,Menlo,monospace;font-size:13px;min-height:140px}
+    .badge{padding:2px 8px;border-radius:999px;border:1px solid #3a4b7c;background:#101838;font-size:12px}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Consolas,Monaco,Menlo,monospace;border:1px solid #2a3a67;background:#0e152b;padding:2px 6px;border-radius:6px}
+    .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    @media(max-width:880px){.cards{grid-template-columns:1fr}}
+    .card{background:#0d1430;border:1px solid #26355e;border-radius:12px;padding:12px}
+    .m{margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Mini Online Judge — Python <span class="badge">Runs in your browser via Pyodide</span></h1>
+    <div class="panel m">
+      <div class="bar">
+        <label>โจทย์: 
+          <select id="problemSelect"></select>
+        </label>
+        <span class="pill">รูปแบบคำตอบ: <b id="signature"></b></span>
+        <button class="ghost" id="showSpec">ดูสเปก/ตัวอย่าง</button>
+        <button class="primary" id="runBtn">รันทดสอบ</button>
+        <button class="ghost" id="resetBtn">เติมโค้ดตัวอย่าง</button>
+      </div>
+      <div class="grid">
+        <div>
+          <textarea id="code"></textarea>
+          <div class="desc m">พิมพ์เฉพาะ <b>ฟังก์ชัน</b> ตามที่กำหนด (ห้ามใช้ <span class="kbd">input()</span> ในฟังก์ชัน). ระบบจะรันทดสอบ (public tests) และรายงานผลทันที</div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="desc">รายละเอียดโจทย์</div>
+            <div id="specText" class="m"></div>
+          </div>
+          <div class="card">
+            <div class="desc">ผลทดสอบ</div>
+            <div id="status" class="m">พร้อมรัน</div>
+            <div id="results" class="results m"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="desc m">⚠️ โค้ดรัน <b>ในเบราว์เซอร์</b> (Pyodide, WebAssembly) — ปลอดภัยกว่าการรันบนเซิร์ฟเวอร์และไม่ต้องติดตั้งอะไร</div>
+  </div>
+
+<script>
+// ---------------- Problem Set ----------------
+const PROBLEMS = {
+  add: {
+    title: "1) Sum of Two",
+    signature: "add(a: int, b: int) -> int",
+    spec: `คืนค่าผลบวกของ a และ b\nตัวอย่าง: add(2,3) -> 5`,
+    template: `def add(a: int, b: int) -> int:\n    # TODO: เขียนโค้ดของคุณที่นี่\n    return a + b\n`,
+    tests: [
+      {args:[2,3], expected:5},
+      {args:[-1,1], expected:0},
+      {args:[10,20], expected:30},
+    ],
+  },
+  is_even: {
+    title: "2) Even or Odd",
+    signature: "is_even(n: int) -> bool",
+    spec: `คืน True ถ้า n เป็นเลขคู่ มิฉะนั้น False`,
+    template: `def is_even(n: int) -> bool:\n    return n % 2 == 0\n`,
+    tests: [
+      {args:[0], expected:true},
+      {args:[1], expected:false},
+      {args:[-2], expected:true},
+    ],
+  },
+  middle_char: {
+    title: "3) String Middle",
+    signature: "middle_char(s: str) -> str",
+    spec: `คืนตัวกลางของสตริง ถ้ายาวคู่ให้คืนสองตัวกลาง; สตริงว่าง -> ""`,
+    template: `def middle_char(s: str) -> str:\n    n=len(s)\n    if n==0: return ""\n    m=n//2\n    return s[m] if n%2==1 else s[m-1:m+1]\n`,
+    tests: [
+      {args:[""], expected:""},
+      {args:["a"], expected:"a"},
+      {args:["xy"], expected:"xy"},
+      {args:["cat"], expected:"a"},
+    ],
+  },
+  unique_sorted: {
+    title: "4) Unique Sorted",
+    signature: "unique_sorted(nums: list[int]) -> list[int]",
+    spec: `ลบค่าซ้ำแล้วคืนลิสต์เรียงจากน้อยไปมาก`,
+    template: `def unique_sorted(nums: list[int]) -> list[int]:\n    return sorted(set(nums))\n`,
+    tests: [
+      {args:[[]], expected:[]},
+      {args:[[1]], expected:[1]},
+      {args:[[3,3,2,1]], expected:[1,2,3]},
+    ],
+  },
+  count_vowels: {
+    title: "5) Count Vowels",
+    signature: "count_vowels(s: str) -> int",
+    spec: `นับสระภาษาอังกฤษ a e i o u (ไม่แคร์พิมพ์เล็กใหญ่)`,
+    template: `def count_vowels(s: str) -> int:\n    return sum(ch.lower() in "aeiou" for ch in s)\n`,
+    tests: [
+      {args:["AEiou"], expected:5},
+      {args:["xyz"], expected:0},
+      {args:[""], expected:0},
+    ],
+  },
+  two_sum: {
+    title: "6) Two Sum Index",
+    signature: "two_sum(nums: list[int], target: int) -> tuple[int,int] | None",
+    spec: `หา index สองค่าที่บวกได้ target หากไม่มีคืน None (คำตอบใดก็ได้ที่ถูกต้อง)`,
+    template: `def two_sum(nums, target):\n    m={}\n    for i,x in enumerate(nums):\n        if target-x in m: return (m[target-x], i)\n        m[x]=i\n    return None\n`,
+    tests: [
+      {args:[[2,7,11,15],9], expected:[0,1], anyOrder:true},
+      {args:[[1,2,3],5], oneOf:[[1,2],[0,2]]},
+      {args:[[1,1,1],10], expected:null},
+    ],
+  },
+  is_anagram: {
+    title: "7) Anagram Check",
+    signature: "is_anagram(a: str, b: str) -> bool",
+    spec: `คืน True หากเป็นอนาแกรม (ไม่สนเว้นวรรค/พิมพ์ใหญ่เล็ก)`,
+    template: `def is_anagram(a: str, b: str) -> bool:\n    import re\n    A=re.sub(r"\\s+","",a).lower()\n    B=re.sub(r"\\s+","",b).lower()\n    from collections import Counter\n    return Counter(A)==Counter(B)\n`,
+    tests: [
+      {args:["Listen","Silent"], expected:true},
+      {args:["Dormitory","Dirty room"], expected:true},
+      {args:["a","aa"], expected:false},
+    ],
+  },
+  collatz_steps: {
+    title: "8) Collatz Steps",
+    signature: "collatz_steps(n: int) -> int",
+    spec: `นับจำนวนสเต็ปจน n เป็น 1 ตามกติกา: คู่/2, คี่*3+1 (n>=1)`,
+    template: `def collatz_steps(n: int) -> int:\n    steps=0\n    while n>1:\n        if n%2==0: n//=2\n        else: n=3*n+1\n        steps+=1\n    return steps\n`,
+    tests: [
+      {args:[1], expected:0},
+      {args:[2], expected:1},
+      {args:[3], expected:7},
+      {args:[6], expected:8},
+    ],
+  },
+  rle_encode: {
+    title: "9) Compress Runs",
+    signature: "rle_encode(s: str) -> str",
+    spec: `Run-Length Encoding: \"aaabbc\" -> \"a3b2c1\"`,
+    template: `def rle_encode(s: str) -> str:\n    if not s: return ""\n    out=[];cnt=1\n    for i in range(1,len(s)):\n        if s[i]==s[i-1]: cnt+=1\n        else:\n            out.append(f"{s[i-1]}{cnt}")\n            cnt=1\n    out.append(f"{s[-1]}{cnt}")\n    return "".join(out)\n`,
+    tests: [
+      {args:[""], expected:""},
+      {args:["a"], expected:"a1"},
+      {args:["aaabbc"], expected:"a3b2c1"},
+    ],
+  },
+  spiral_order: {
+    title: "10) Matrix Spiral",
+    signature: "spiral_order(mat: list[list[int]]) -> list[int]",
+    spec: `คืนลำดับสมาชิกของเมทริกซ์แบบเกลียว`,
+    template: `def spiral_order(mat):\n    res=[]\n    if not mat: return res\n    top,left=0,0\n    bottom,len_col=len(mat)-1,len(mat[0])-1\n    while top<=bottom and left<=len_col:\n        for c in range(left, len_col+1): res.append(mat[top][c])\n        top+=1\n        for r in range(top, bottom+1): res.append(mat[r][len_col])\n        len_col-=1\n        if top<=bottom:\n            for c in range(len_col, left-1, -1): res.append(mat[bottom][c])\n            bottom-=1\n        if left<=len_col:\n            for r in range(bottom, top-1, -1): res.append(mat[r][left])\n            left+=1\n    return res\n`,
+    tests: [
+      {args:[[]], expected:[]},
+      {args:[[[1]]], expected:[1]},
+      {args:[[[1,2],[3,4]]], expected:[1,2,4,3]},
+      {args:[[[1,2,3],[4,5,6],[7,8,9]]], expected:[1,2,3,6,9,8,7,4,5]},
+    ],
+  },
+}
+
+// ---------- UI Init ----------
+const sel = document.getElementById('problemSelect');
+const code = document.getElementById('code');
+const specText = document.getElementById('specText');
+const signature = document.getElementById('signature');
+const statusEl = document.getElementById('status');
+const resultsEl = document.getElementById('results');
+
+for (const key of Object.keys(PROBLEMS)){
+  const opt = document.createElement('option');
+  opt.value = key; opt.textContent = PROBLEMS[key].title;
+  sel.appendChild(opt);
+}
+
+function loadProblem(key){
+  const p = PROBLEMS[key];
+  signature.textContent = p.signature;
+  specText.textContent = p.spec;
+  code.value = p.template;
+  statusEl.textContent = 'พร้อมรัน';
+  resultsEl.textContent = '';
+}
+
+sel.addEventListener('change', ()=> loadProblem(sel.value));
+
+document.getElementById('resetBtn').addEventListener('click', ()=> loadProblem(sel.value));
+
+document.getElementById('showSpec').addEventListener('click', ()=>{
+  alert(PROBLEMS[sel.value].spec);
+});
+
+loadProblem('add');
+
+// ---------- Pyodide Setup (with CDN fallbacks) ----------
+let pyodideReady = false;
+let pyodide;
+const runBtn = document.getElementById('runBtn');
+const resetBtn = document.getElementById('resetBtn');
+runBtn.disabled = true; resetBtn.disabled = true;
+
+const CDN_LIST = [
+  'https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js',
+  'https://unpkg.com/pyodide@0.25.1/full/pyodide.js'
+];
+
+function loadScript(src){
+  return new Promise((resolve, reject)=>{
+    const s = document.createElement('script');
+    s.src = src; s.async = true; s.onload = ()=>resolve(); s.onerror = ()=>reject(new Error('load fail: '+src));
+    document.head.appendChild(s);
+  });
+}
+
+async function bootstrapPyodide(){
+  statusEl.textContent = 'กำลังโหลด Pyodide...';
+  let lastErr;
+  for (const cdn of CDN_LIST){
+    try{
+      await loadScript(cdn);
+      // loadPyodide is now available
+      pyodide = await loadPyodide({ indexURL: cdn.replace(/\/pyodide\.js$/, '/') });
+      pyodideReady = true;
+      statusEl.textContent = 'พร้อมรัน';
+      runBtn.disabled = false; resetBtn.disabled = false;
+      return;
+    }catch(err){
+      lastErr = err;
+      statusEl.textContent = 'กำลังสลับแหล่งดาวน์โหลดสำรอง...';
+    }
+  }
+  statusEl.innerHTML = '<b class="bad">โหลด Pyodide ไม่สำเร็จ</b>';
+  resultsEl.textContent = String(lastErr || 'ไม่สามารถโหลดสคริปต์ได้');
+}
+
+bootstrapPyodide();
+
+// ---------- Runner ----------
+function pyStringEscape(s){
+  return s.replaceAll('\\','\\\\').replaceAll('`','\\`');
+}
+
+function toPyLiteral(v){
+  if (v === null) return 'None';
+  if (Array.isArray(v)) return '[' + v.map(toPyLiteral).join(',') + ']';
+  if (typeof v === 'string') return '`'+pyStringEscape(v)+'`';
+  return String(v);
+}
+
+function buildTestCode(pKey){
+  const p = PROBLEMS[pKey];
+  let py = `import types, json
+
+`;
+  py += `__results__ = []
+`;
+  py += `def __run_case__(func, args, expected, anyOrder=False, oneOf=None):
+    try:
+        got = func(*args)
+        ok = False
+        if oneOf is not None:
+            ok = any(tuple(got)==tuple(x) or list(got)==list(x) for x in oneOf) if got is not None else False
+        elif anyOrder and isinstance(got,(tuple,list)) and isinstance(expected,(tuple,list)) and len(got)==len(expected):
+            ok = sorted(got)==sorted(expected)
+        else:
+            ok = (got==expected)
+        __results__.append({"status":"OK" if ok else "FAIL","call":args,"expected":expected,"got":got})
+    except Exception as e:
+        __results__.append({"status":"ERROR","call":args,"expected":expected,"got":repr(e)})
+
+`;
+  py += `# --- student code below ---
+`;
+  py += pyStringEscape(code.value) + `
+`;
+  py += `# --- end student code ---
+`;
+  const funcName = PROBLEMS[pKey].signature.split('(')[0];
+  py += `import builtins
+`;
+  py += `if '${funcName}' not in globals() or not isinstance(globals()['${funcName}'], types.FunctionType):
+    __results__.append({"status":"ERROR","call":[],"expected":"function ${funcName}","got":"ไม่พบฟังก์ชัน ${funcName}()"})
+else:
+`;
+  for (const t of PROBLEMS[pKey].tests){
+    const argsLit = toPyLiteral(t.args);
+    const expLit = t.oneOf ? toPyLiteral(t.oneOf) : toPyLiteral(t.expected);
+    const flags = `anyOrder=${t.anyOrder? 'True':'False'}, oneOf=${t.oneOf? '__oneof__': 'None'}`;
+    if (t.oneOf){
+      py += `    __oneof__ = ${expLit}
+`;
+      py += `    __run_case__(${funcName}, ${argsLit}, None, ${flags})
+`;
+    } else {
+      py += `    __run_case__(${funcName}, ${argsLit}, ${expLit}, ${flags})
+`;
+    }
+  }
+  py += `
+import json; __out__ = json.dumps(__results__)
+`;
+  return py;
+}
+
+async function runTests(){
+  if (!pyodideReady){
+    statusEl.innerHTML = '<b class="warn">Pyodide ยังไม่พร้อม</b>';
+    return;
+  }
+  statusEl.textContent = 'กำลังรัน...';
+  resultsEl.textContent = '';
+  const key = sel.value;
+  try{
+    const py = buildTestCode(key);
+    await pyodide.runPythonAsync(py);
+    const out = pyodide.globals.get('__out__');
+    const arr = JSON.parse(out);
+    const ok = arr.every(r=>r.status==='OK');
+    statusEl.innerHTML = ok ? '<b class="ok">✅ ผ่านทุกเคส</b>' : '<b class="bad">❌ มีเคสไม่ผ่าน</b>';
+    const lines = arr.map(r=>{
+      const a = JSON.stringify(r.call);
+      const e = JSON.stringify(r.expected);
+      const g = JSON.stringify(r.got);
+      let tag = r.status==='OK' ? '✅' : (r.status==='ERROR' ? '⚠️' : '❌');
+      return `${tag} args=${a} | expected=${e} | got=${g}`;
+    });
+    resultsEl.textContent = lines.join('');
+  }catch(err){
+    statusEl.innerHTML = '<b class="bad">⚠️ Runtime Error</b>';
+    resultsEl.textContent = String(err);
+  }
+}
+
+document.getElementById('runBtn').addEventListener('click', runTests);
+
+function pyStringEscape(s){
+  return s.replaceAll('\\','\\\\').replaceAll('`','\\`');
+}
+
+function toPyLiteral(v){
+  if (v === null) return 'None';
+  if (Array.isArray(v)) return '[' + v.map(toPyLiteral).join(',') + ']';
+  if (typeof v === 'string') return '`'+pyStringEscape(v)+'`';
+  return String(v);
+}
+
+function buildTestCode(pKey){
+  const p = PROBLEMS[pKey];
+  // Build Python that defines checkers and runs tests
+  let py = `import types, json\n\n`;
+  py += `__results__ = []\n`;
+  py += `def __run_case__(func, args, expected, anyOrder=False, oneOf=None):\n    try:\n        got = func(*args)\n        ok = False\n        if oneOf is not None:\n            ok = any(tuple(got)==tuple(x) or list(got)==list(x) for x in oneOf) if got is not None else False\n        elif anyOrder and isinstance(got,(tuple,list)) and isinstance(expected,(tuple,list)) and len(got)==len(expected):\n            ok = sorted(got)==sorted(expected)\n        else:\n            ok = (got==expected)\n        __results__.append({"status":"OK" if ok else "FAIL","call":args,"expected":expected,"got":got})\n    except Exception as e:\n        __results__.append({"status":"ERROR","call":args,"expected":expected,"got":repr(e)})\n\n`;
+  // student code placeholder
+  py += `# --- student code below ---\n`;
+  py += pyStringEscape(code.value) + `\n`;
+  py += `# --- end student code ---\n`;
+  // guard: ensure function exists
+  const funcName = p.signature.split('(')[0];
+  py += `import builtins\n`; 
+  py += `if '${funcName}' not in globals() or not isinstance(globals()['${funcName}'], types.FunctionType):\n    __results__.append({"status":"ERROR","call":[],"expected":"function ${funcName}","got":"ไม่พบฟังก์ชัน ${funcName}()"})\nelse:\n`;
+  for (const t of p.tests){
+    const argsLit = toPyLiteral(t.args);
+    const expLit = t.oneOf ? toPyLiteral(t.oneOf) : toPyLiteral(t.expected);
+    const flags = `anyOrder=${t.anyOrder? 'True':'False'}, oneOf=${t.oneOf? '__oneof__': 'None'}`;
+    if (t.oneOf){
+      py += `    __oneof__ = ${expLit}\n`;
+      py += `    __run_case__(${funcName}, ${argsLit}, None, ${flags})\n`;
+    } else {
+      py += `    __run_case__(${funcName}, ${argsLit}, ${expLit}, ${flags})\n`;
+    }
+  }
+  py += `\nimport json; __out__ = json.dumps(__results__)\n`;
+  return py;
+}
+
+async function runTests(){
+  if (!pyodideReady){
+    alert('Pyodide ยังไม่พร้อม กรุณาลองใหม่');
+    return;
+  }
+  statusEl.textContent = 'กำลังรัน...';
+  resultsEl.textContent = '';
+  const key = sel.value;
+  try{
+    const py = buildTestCode(key);
+    await pyodide.runPythonAsync(py);
+    const out = pyodide.globals.get('__out__');
+    const arr = JSON.parse(out);
+    const ok = arr.every(r=>r.status==='OK');
+    statusEl.innerHTML = ok ? '<b class="ok">✅ ผ่านทุกเคส</b>' : '<b class="bad">❌ มีเคสไม่ผ่าน</b>';
+    const lines = arr.map(r=>{
+      const a = JSON.stringify(r.call);
+      const e = JSON.stringify(r.expected);
+      const g = JSON.stringify(r.got);
+      let tag = r.status==='OK' ? '✅' : (r.status==='ERROR' ? '⚠️' : '❌');
+      return `${tag} args=${a} | expected=${e} | got=${g}`;
+    });
+    resultsEl.textContent = lines.join('\n');
+  }catch(err){
+    statusEl.innerHTML = '<b class="bad">⚠️ Runtime Error</b>';
+    resultsEl.textContent = String(err);
+  }
+}
+
+document.getElementById('runBtn').addEventListener('click', runTests);
+</script>
+</body>
+</html>
