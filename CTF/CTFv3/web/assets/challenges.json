@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sum-unique",
+    "title": "Sum of Unique Elements",
+    "difficulty": "Easy",
+    "category": "Array",
+    "description": "Given a list of integers, return the sum of the values that appear exactly once in the list.",
+    "sample_input": "[1, 2, 3, 2]",
+    "sample_output": "4",
+    "starter_code": "import json\n\n\ndef solve(nums):\n    # TODO: return the sum of elements that appear exactly once\n    pass\n\n\ndef main():\n    raw = input().strip()\n    nums = json.loads(raw) if raw else []\n    result = solve(nums)\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+  },
+  {
+    "id": "two-sum",
+    "title": "Two Sum",
+    "difficulty": "Medium",
+    "category": "Hash Map",
+    "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. Assume exactly one solution exists.",
+    "sample_input": "{\"nums\": [2,7,11,15], \"target\": 9}",
+    "sample_output": "[0, 1]",
+    "starter_code": "import json\n\n\ndef solve(nums, target):\n    # TODO: return the indices of the two numbers that add up to target\n    pass\n\n\ndef main():\n    data = json.loads(input())\n    nums = data[\"nums\"]\n    target = data[\"target\"]\n    print(solve(nums, target))\n\n\nif __name__ == \"__main__\":\n    main()\n"
+  },
+  {
+    "id": "valid-parentheses",
+    "title": "Valid Parentheses",
+    "difficulty": "Easy",
+    "category": "Stack",
+    "description": "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+    "sample_input": "\"([]){}\"",
+    "sample_output": "true",
+    "starter_code": "def is_valid_parentheses(s):\n    # TODO: return True if parentheses are valid, else False\n    pass\n\n\ndef main():\n    s = input().strip().strip('\"')\n    print(str(is_valid_parentheses(s)).lower())\n\n\nif __name__ == \"__main__\":\n    main()\n"
+  }
+]

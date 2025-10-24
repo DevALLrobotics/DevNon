@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTFv3 Scoring Portal</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <h1>CTFv3 Scoring Portal</h1>
+    <p>Submit your testcase results to see your score and flag.</p>
+  </header>
+
+  <main>
+    <div class="layout">
+      <aside class="card challenge-list">
+        <h2>Challenges</h2>
+        <ul id="challenge-items"></ul>
+      </aside>
+
+      <section class="workspace">
+        <article class="card problem" id="problem-card">
+          <h2 id="problem-title">Select a challenge</h2>
+          <p id="problem-description">
+            Pick a problem from the list to see its details, sample cases, and constraints.
+          </p>
+          <div id="problem-meta" class="problem-meta hidden">
+            <p><strong>Difficulty:</strong> <span id="problem-difficulty"></span></p>
+            <p><strong>Category:</strong> <span id="problem-category"></span></p>
+            <div>
+              <h3>Sample Input</h3>
+              <pre id="problem-sample-input"></pre>
+            </div>
+            <div>
+              <h3>Sample Output</h3>
+              <pre id="problem-sample-output"></pre>
+            </div>
+          </div>
+        </article>
+
+        <section class="card editor">
+          <div class="editor-header">
+            <h2>Code Workspace</h2>
+            <div class="editor-actions">
+              <button id="load-template" type="button">Load Template</button>
+              <button id="clear-editor" type="button">Clear</button>
+            </div>
+          </div>
+          <textarea
+            id="code-editor"
+            placeholder="# Write your solution here..."
+            spellcheck="false"
+          ></textarea>
+          <div class="submit-row">
+            <button id="submit-code" type="button" class="primary-button full-width">Submit Code</button>
+          </div>
+          <p id="submission-status" class="submission-status hidden"></p>
+          <p class="editor-hint">
+            Tip: this editor stores your work locally per challenge. Switch problems freely without losing code.
+          </p>
+        </section>
+
+        <section class="card scorer">
+          <h2>Score Submission</h2>
+          <form id="score-form">
+            <label for="results-input">Testcase Results (comma-separated booleans)</label>
+            <input
+              id="results-input"
+              name="results"
+              type="text"
+              placeholder="true, false, true"
+              required
+            />
+            <button type="submit">Calculate Score</button>
+          </form>
+
+          <div id="response" class="hidden">
+            <h3>Results</h3>
+            <p><strong>Total Tests:</strong> <span id="total-tests">0</span></p>
+            <p><strong>Passed Tests:</strong> <span id="passed-tests">0</span></p>
+            <p><strong>Score:</strong> <span id="score">0</span></p>
+            <p class="flag hidden"><strong>Flag:</strong> <span id="flag-value"></span></p>
+            <p id="error-message" class="error hidden"></p>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Powered by FastAPI
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
