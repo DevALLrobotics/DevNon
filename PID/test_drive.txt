@@ -1,0 +1,92 @@
+def drive_straight(distance_cm, max_speed=40):
+    """Drive straight with gyro-assisted PID (fine-tuned via RL) + concise 2-decimal debug"""
+
+    # --- Reset sensors ---
+    left_drive_motor.set_position(0, DEGREES)
+    right_drive_motor.set_position(0, DEGREES)
+    inertial_sensor.set_rotation(0, DEGREES)
+
+    # --- Wheel setup ---
+    wheel_circumference = 22.0  # cm per revolution
+    target_deg = (distance_cm / wheel_circumference) * 360
+
+    # --- RL-tuned PID parameters ---
+    Kp = 4.62
+    Ki = 0.0068
+    Kd = 0.025
+    Kg = 0.359
+
+    integral = 0.0
+    last_error = 0.0
+    gyro_z = 0.0
+
+    heading_target = inertial_sensor.rotation(DEGREES)
+
+    print("=== Starting drive_straight PID control ===")
+    print("Target distance: {:.1f} cm | Target heading: {:.2f}°".format(distance_cm, heading_target))
+    print("Kp={:.2f}, Ki={:.4f}, Kd={:.3f}, Kg={:.3f}".format(Kp, Ki, Kd, Kg))
+    print("------------------------------------------------")
+
+    while True:
+        # --- Encoder average ---
+        left_pos = left_drive_motor.position(DEGREES)
+        right_pos = right_drive_motor.position(DEGREES)
+        avg_pos = (left_pos + right_pos) / 2
+
+        # --- Heading PID ---
+        current_heading = inertial_sensor.rotation(DEGREES)
+        error = normalize_angle(heading_target - current_heading)
+        integral += error
+        derivative = error - last_error
+
+        # --- Gyro rate (low-pass filter) ---
+        alpha = 0.25
+        gyro_z_raw = inertial_sensor.gyro_rate(AxisType.ZAXIS, VelocityUnits.DPS)
+        gyro_z = alpha * gyro_z_raw + (1 - alpha) * gyro_z
+
+        # --- PID correction ---
+        correction = Kp * error + Ki * integral + Kd * derivative + Kg * (-gyro_z)
+
+        # --- Ramp-down speed ---
+        remaining = target_deg - avg_pos
+        if remaining < 150:
+            ramp_speed = max(8, max_speed * (remaining / 150.0) ** 1.3)
+        else:
+            ramp_speed = max_speed
+
+        # --- Differential power ---
+        left_power = ramp_speed - correction
+        right_power = ramp_speed + correction
+
+        # --- Clamp power ---
+        left_power = max(-100, min(100, left_power))
+        right_power = max(-100, min(100, right_power))
+
+        # --- Drive motors ---
+        left_drive_motor.spin(FORWARD, left_power, PERCENT)
+        right_drive_motor.spin(FORWARD, right_power, PERCENT)
+
+        # --- Print debug (2 decimal only) ---
+        print("Heading: {:6.2f}° | Err: {:+6.2f} | Corr: {:+6.2f} | L: {:+6.2f} | R: {:+6.2f}"
+              .format(current_heading, error, correction, left_power, right_power))
+
+        # --- Anti-windup ---
+        if abs(error) < 1.0:
+            integral = 0.0
+        else:
+            integral = max(-300, min(300, integral))
+
+        # --- Smooth stop zone ---
+        if remaining <= 10:
+            ramp_speed = min(ramp_speed, 10)
+        if remaining <= 2.0:
+            left_drive_motor.stop(COAST)
+            right_drive_motor.stop(COAST)
+            wait(80, MSEC)
+            left_drive_motor.stop(BRAKE)
+            right_drive_motor.stop(BRAKE)
+            print("=== Drive complete ===")
+            break
+
+        last_error = error
+        wait(15, MSEC)

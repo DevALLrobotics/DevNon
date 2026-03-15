@@ -1,11 +1,11 @@
-## CTFv3 FastAPI Scoring Service
+## CTFv3 Flask Scoring Service
 
-This API mirrors the scoring logic used by the judge. Each `true` in the `testcase_results` array counts for 100 points and a flag is returned when every test passes.
+This Flask API mirrors the scoring logic used by the judge. Each `true` in the `testcase_results` array counts for 100 points and a flag is returned when every test passes.
 
 ### Installation
 
 ```bash
-python3 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -13,14 +13,14 @@ pip install -r requirements.txt
 ### Running the server
 
 ```bash
-uvicorn app.main:app --reload
+python app/main.py
 ```
 
 The API enables permissive CORS for local development, so the static site can call it from another port.
 
 ### Frontend
 
-Static site files live in `web/`. You can open `web/index.html` directly in a browser, or serve the directory via any static server (e.g. `python3 -m http.server`).
+Static site files live in `web/`. You can open `web/index.html` directly in a browser, or serve the directory via any static server (e.g. `python -m http.server`).
 
 ### Example request
 
@@ -41,7 +41,7 @@ Response:
 }
 ```
 
-When all items are `true`, the response includes the flag `"flag": "flag{fastapi_ctf_v3}"`.
+When all items are `true`, the response includes the flag `"flag": "flag{flask_ctf_v3}"`.
 
 ### Code submissions
 
@@ -53,8 +53,7 @@ Content-Type: application/json
 
 {
   "challenge_id": "sum-unique",
-  "source_code": "...user code...",
-  "language": "python"
+  "source_code": "...user code..."
 }
 ```
 
