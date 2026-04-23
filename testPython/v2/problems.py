@@ -1,0 +1,115 @@
+PROBLEMS = {
+    "add": {
+        "title": "1) Sum of Two",
+        "signature": "add(a: int, b: int) -> int",
+        "spec": "คืนค่าผลบวกของ a และ b",
+        "template": "def add(a: int, b: int) -> int:\n    # TODO\n    return a + b\n",
+        "tests": [
+            {"args":[2,3], "expected":5},
+            {"args":[-1,1], "expected":0},
+            {"args":[10,20], "expected":30},
+        ],
+    },
+    "is_even": {
+        "title": "2) Even or Odd",
+        "signature": "is_even(n: int) -> bool",
+        "spec": "คืน True ถ้า n เป็นเลขคู่ มิฉะนั้น False",
+        "template": "def is_even(n: int) -> bool:\n    return n % 2 == 0\n",
+        "tests": [
+            {"args":[0], "expected":True},
+            {"args":[1], "expected":False},
+            {"args":[-2], "expected":True},
+        ],
+    },
+    "middle_char": {
+        "title": "3) String Middle",
+        "signature": "middle_char(s: str) -> str",
+        "spec": "คืนตัวกลางของสตริง ถ้ายาวคู่ให้คืนสองตัวกลาง; ว่าง→\"\"",
+        "template": "def middle_char(s: str) -> str:\n    n=len(s)\n    if n==0: return \"\"\n    m=n//2\n    return s[m] if n%2 else s[m-1:m+1]\n",
+        "tests": [
+            {"args":[""], "expected":""},
+            {"args":["a"], "expected":"a"},
+            {"args":["xy"], "expected":"xy"},
+            {"args":["cat"], "expected":"a"},
+        ],
+    },
+    "unique_sorted": {
+        "title": "4) Unique Sorted",
+        "signature": "unique_sorted(nums: list[int]) -> list[int]",
+        "spec": "ลบค่าซ้ำแล้วเรียงจากน้อยไปมาก",
+        "template": "def unique_sorted(nums: list[int]) -> list[int]:\n    return sorted(set(nums))\n",
+        "tests": [
+            {"args":[[]], "expected":[]},
+            {"args":[[1]], "expected":[1]},
+            {"args":[[3,3,2,1]], "expected":[1,2,3]},
+        ],
+    },
+    "count_vowels": {
+        "title": "5) Count Vowels",
+        "signature": "count_vowels(s: str) -> int",
+        "spec": "นับ a e i o u (ไม่แคร์พิมพ์ใหญ่/เล็ก)",
+        "template": "def count_vowels(s: str) -> int:\n    return sum(ch.lower() in 'aeiou' for ch in s)\n",
+        "tests": [
+            {"args":["AEiou"], "expected":5},
+            {"args":["xyz"], "expected":0},
+            {"args":[""], "expected":0},
+        ],
+    },
+    "two_sum": {
+        "title": "6) Two Sum Index",
+        "signature": "two_sum(nums: list[int], target: int) -> tuple[int,int] | None",
+        "spec": "หา index สองตัวที่บวกได้ target (คำตอบไหนก็ได้); ไม่มี→None",
+        "template": "def two_sum(nums, target):\n    m={}\n    for i,x in enumerate(nums):\n        if target-x in m:\n            return (m[target-x], i)\n        m[x]=i\n    return None\n",
+        "tests": [
+            {"args":[[2,7,11,15],9], "expected":[0,1], "anyOrder": True},
+            {"args":[[1,2,3],5], "oneOf":[[1,2],[0,2]]},
+            {"args":[[1,1,1],10], "expected":None},
+        ],
+    },
+    "is_anagram": {
+        "title": "7) Anagram Check",
+        "signature": "is_anagram(a: str, b: str) -> bool",
+        "spec": "True ถ้าเป็นอนาแกรม (ไม่สนช่องว่าง/พิมพ์ใหญ่เล็ก)",
+        "template": "def is_anagram(a: str, b: str) -> bool:\n    import re\n    A=re.sub(r\"\\s+\",\"\",a).lower()\n    B=re.sub(r\"\\s+\",\"\",b).lower()\n    from collections import Counter\n    return Counter(A)==Counter(B)\n",
+        "tests": [
+            {"args":["Listen","Silent"], "expected":True},
+            {"args":["Dormitory","Dirty room"], "expected":True},
+            {"args":["a","aa"], "expected":False},
+        ],
+    },
+    "collatz_steps": {
+        "title": "8) Collatz Steps",
+        "signature": "collatz_steps(n: int) -> int",
+        "spec": "นับสเต็ปจน n เป็น 1 (คู่/2, คี่*3+1; n>=1)",
+        "template": "def collatz_steps(n: int) -> int:\n    steps=0\n    while n>1:\n        n = n//2 if n%2==0 else 3*n+1\n        steps+=1\n    return steps\n",
+        "tests": [
+            {"args":[1], "expected":0},
+            {"args":[2], "expected":1},
+            {"args":[3], "expected":7},
+            {"args":[6], "expected":8},
+        ],
+    },
+    "rle_encode": {
+        "title": "9) Compress Runs",
+        "signature": "rle_encode(s: str) -> str",
+        "spec": "RLE: 'aaabbc' -> 'a3b2c1'",
+        "template": "def rle_encode(s: str) -> str:\n    if not s: return ''\n    out=[];cnt=1\n    for i in range(1,len(s)):\n        if s[i]==s[i-1]: cnt+=1\n        else: out.append(f\"{s[i-1]}{cnt}\"); cnt=1\n    out.append(f\"{s[-1]}{cnt}\")\n    return ''.join(out)\n",
+        "tests": [
+            {"args":[""], "expected":""},
+            {"args":["a"], "expected":"a1"},
+            {"args":["aaabbc"], "expected":"a3b2c1"},
+        ],
+    },
+    "spiral_order": {
+        "title": "10) Matrix Spiral",
+        "signature": "spiral_order(mat: list[list[int]]) -> list[int]",
+        "spec": "คืนลำดับสมาชิกของเมทริกซ์แบบเกลียว",
+        "template": "def spiral_order(mat):\n    res=[]\n    if not mat: return res\n    top,left=0,0\n    bottom,right=len(mat)-1,len(mat[0])-1\n    while top<=bottom and left<=right:\n        for c in range(left,right+1): res.append(mat[top][c])\n        top+=1\n        for r in range(top,bottom+1): res.append(mat[r][right])\n        right-=1\n        if top<=bottom:\n            for c in range(right,left-1,-1): res.append(mat[bottom][c])\n            bottom-=1\n        if left<=right:\n            for r in range(bottom,top-1,-1): res.append(mat[r][left])\n            left+=1\n    return res\n",
+        "tests": [
+            {"args":[[]], "expected":[]},
+            {"args":[[[1]]], "expected":[1]},
+            {"args":[[[1,2],[3,4]]], "expected":[1,2,4,3]},
+            {"args":[[[1,2,3],[4,5,6],[7,8,9]]], "expected":[1,2,3,6,9,8,7,4,5]},
+        ],
+    },
+}
